@@ -3,4 +3,6 @@
 .vscode
 .DS_STORE
 __pycache__
-activo-env/
+venv
+.pytest_cache
+.pytest_cache/v/cache
