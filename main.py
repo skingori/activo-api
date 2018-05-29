@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 
 from config import config
 from api.models.database import db
+from manage import ma
 
 config_name = getenv('FLASK_ENV', default='production')
 
@@ -25,6 +26,9 @@ def create_app(config=config[config_name]):
 
     # bind app to db
     db.init_app(app)
+
+    # bind marshmallow to app
+    ma.init_app(app)
 
     # import all models
     from api.models.user import User
