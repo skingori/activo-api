@@ -1,6 +1,5 @@
 """ Module with user model schemas. """
-from marshmallow import (ValidationError, fields, post_load, pre_load,
-                         validates)
+from marshmallow import (ValidationError, fields, post_load, validates)
 
 from ..models.user import User
 from .base_schemas import BaseSchema
@@ -21,4 +20,4 @@ class UserSchema(BaseSchema):
     @post_load
     def create_user(self, data):
         """ Return user object after successful loading of data"""
-        return User(**data)
+        return User().create_user(**data)
