@@ -1,6 +1,6 @@
 """Module with application entry point."""
 from os import getenv
-from flask import jsonify
+from flask import jsonify, request
 from flask_marshmallow import Marshmallow
 from api.middlewares.token_required import token_required
 
@@ -16,7 +16,7 @@ config_name = getenv('FLASK_ENV', default='production')
 app = create_app(config[config_name])
 
 # create marshmallow object to handle serialization
-ma = Marshmallow()
+ma = Marshmallow(app)
 
 
 @app.route('/')
