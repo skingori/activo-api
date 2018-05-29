@@ -3,9 +3,16 @@
 from .database import db
 from .base.base_model import BaseModel
 
+
 class User(BaseModel):
     """Class for user db table."""
-    
+
+    def __init__(name, email, image_url=None):
+        """ Method to instantiate a user object. """
+        self.name = name
+        self.email = email
+        self.image_url = image_url if image_url else None
+
     __tablename__ = 'users'
     name = db.Column(db.String(60), nullable=False)
     email = db.Column(db.String(60), nullable=False, unique=True)
