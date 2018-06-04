@@ -1,16 +1,17 @@
 """ Module for base marshmallow schema. """
-from marshmallow import (Schema, ValidationError, fields, post_load, pre_load,
-                         validates)
-from flask import jsonify, request, make_response, json, abort
+from marshmallow import Schema, fields
+from flask import make_response, json, abort
 from json import JSONDecodeError
 
 
 class BaseSchema(Schema):
     """Base marshmallow schema with common attributes."""
     id = fields.String(dump_only=True)
+    deleted = fields.Boolean()
 
     def load_into_schema(self, data):
-        '''Helper function to load raw request data into schema'''
+        """Helper function to load raw request data into schema"""
+
         try:
             data, errors = self.loads(data)
         except JSONDecodeError:
