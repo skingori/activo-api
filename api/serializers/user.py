@@ -20,4 +20,4 @@ class UserSchema(BaseSchema):
     @post_load
     def create_user(self, data):
         """ Return user object after successful loading of data"""
-        return User().create_user(**data)
+        return User(**data)

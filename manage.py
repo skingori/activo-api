@@ -32,6 +32,7 @@ def registration():
     schema = UserSchema()
     new_user = schema.load_into_schema(request.data)
     new_user = new_user.save()
+
     return jsonify(dict(message='New user created.'))
 
 
