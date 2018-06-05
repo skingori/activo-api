@@ -3,7 +3,8 @@ import re
 from marshmallow import (ValidationError, fields, post_load)
 
 from api.models.user import User
-from .validators.validators import string_validator
+from ..validators.string_validator import string_validator
+from ..validators.string_length_validators import string_length_60_validator
 from ..messages.error_messages import serialization_errors
 from .base_schemas import BaseSchema
 

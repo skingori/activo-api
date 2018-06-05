@@ -1,4 +1,4 @@
-""" Module for generic validators """
+""" Module with string generic validator. """
 import re
 from marshmallow import ValidationError
 
@@ -20,13 +20,3 @@ def string_validator(data):
     else:
         if not re.match(string_regex, data):
             raise ValidationError(serialization_errors['string_characters'])
-
-
-def string_length_60_validator(data):
-    """
-    Checks if given string is at most 60 characters.
-    Raises validation error otherwise.
-    """
-    if len(data) > 60:
-        raise ValidationError(
-            serialization_errors['string_length'].format('60'))

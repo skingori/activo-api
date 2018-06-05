@@ -1,7 +1,12 @@
+""" Module for asset model schema. """
+
 from marshmallow import fields, post_load, validate
 
 from .base_schemas import BaseSchema
 from api.models.assets import Asset
+from ..validators.string_validator import string_validator
+from ..validators.string_length_validators import string_length_60_validator
+from ..messages.error_messages import serialization_errors
 
 
 class AssetSchema(BaseSchema):

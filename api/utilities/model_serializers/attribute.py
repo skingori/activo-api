@@ -1,8 +1,9 @@
+""" Module for Attribute model serialization schema. """
 from marshmallow import fields, post_load, validate
 
 from .base_schemas import BaseSchema
-from .validators.validators import (string_length_60_validator,
-                                    string_validator)
+from ..validators.string_validator import string_validator
+from ..validators.string_length_validators import string_length_60_validator
 from ..messages.error_messages import serialization_errors
 from api.models.attribute import Attribute
 
