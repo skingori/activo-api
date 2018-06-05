@@ -8,9 +8,10 @@ class AssetCategorySchema(BaseSchema):
     """Asset category model schema"""
 
     name = fields.String(required=True,
-                         validate=validate.Length(
-                             max=60, error='Value cannot be greater than 60 characters'),
-                         error_messages={'required': 'This field is required'})
+                         validate=string_length_60_validator,
+                         error_messages={
+                             'required':
+                             serialization_errors['field_required']})
 
     @post_load
     def create_asset_category(self, data):

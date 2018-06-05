@@ -3,6 +3,8 @@ from marshmallow import Schema, fields
 from flask import make_response, json, abort
 from json import JSONDecodeError
 
+from ..messages.error_messages import serialization_errors
+
 
 class BaseSchema(Schema):
     """Base marshmallow schema with common attributes."""
@@ -16,7 +18,7 @@ class BaseSchema(Schema):
             data, errors = self.loads(data)
         except JSONDecodeError:
             abort(make_response(json.dumps(
-                {'message': 'Invalid JSON input provided'}), 400))
+                {'message': serialization_errors['json_invalid']}), 400))
 
         if errors:
             response = make_response(json.dumps({'errors': errors}))
