@@ -3,7 +3,7 @@ import re
 from marshmallow import (ValidationError, fields, post_load)
 
 from api.models.user import User
-from ..validators.string_validator import string_validator
+from ..validators.name_validator import name_validator
 from ..validators.string_length_validators import string_length_60_validator
 from ..messages.error_messages import serialization_errors
 from .base_schemas import BaseSchema
@@ -33,7 +33,7 @@ class UserSchema(BaseSchema):
 
     name = fields.String(required=True,
                          validate=(string_length_60_validator,
-                                   string_validator),
+                                   name_validator),
                          error_messages={
                              'required':
                              serialization_errors['field_required']})

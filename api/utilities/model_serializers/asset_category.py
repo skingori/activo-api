@@ -2,7 +2,7 @@ from marshmallow import fields, post_load, validate
 
 from .base_schemas import BaseSchema
 from api.models.asset_category import AssetCategory
-from ..validators.string_validator import string_validator
+from ..validators.name_validator import name_validator
 from ..validators.string_length_validators import string_length_60_validator
 from ..messages.error_messages import serialization_errors
 
@@ -12,7 +12,7 @@ class AssetCategorySchema(BaseSchema):
 
     name = fields.String(required=True,
                          validate=(string_length_60_validator,
-                                   string_validator),
+                                   name_validator),
                          error_messages={
                              'required':
                              serialization_errors['field_required']})
