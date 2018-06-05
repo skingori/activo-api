@@ -3,7 +3,7 @@ from flask_restplus import Resource
 # from api.views import api_blueprint
 from api.middlewares.base_validator import ValidationError
 from api.models.asset_category import AssetCategory
-from api.models.attributes import Attribute
+from api.models.attribute import Attribute
 from api.models.input_control import InputControl
 from api.utilities.to_json import to_json
 from main import api
@@ -28,7 +28,7 @@ class AssetCategoryResource(Resource):
         asset_category = AssetCategory(name=fields['name'])
 
         asset_category.save()
-        
+             
         custom_attributes = []
 
         input_control = InputControl.query.filter_by(name='text').first()
