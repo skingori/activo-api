@@ -1,4 +1,4 @@
-from marshmallow import fields, post_load, validate
+from marshmallow import fields, post_load
 
 from .base_schemas import BaseSchema
 from api.models.asset_category import AssetCategory

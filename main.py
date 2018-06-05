@@ -28,6 +28,7 @@ def create_app(config=config[config_name]):
 
     # import all models
     from api.models.user import User
+    from api.models.asset_category import Asset_, AssetCategory
 
     # initialize migration scripts
     migrate = Migrate(app, db)

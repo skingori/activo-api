@@ -1,6 +1,9 @@
 from .database import db
 from uuid import uuid4
 
+from ..utilities.validators.delete_validator import delete_validate
+
+
 class ModelOperations(object):
     def save(self):
         """
@@ -30,8 +33,11 @@ class ModelOperations(object):
         """
         Delete a model instance.
         """
-        db.session.delete(self)
-        db.session.commit()
+        if delete_validate(self.id):
+            db.session.delete(self)
+            db.session.commit()
+        else:
+            print('model operations: not deleted')
 
     @classmethod
     def _query(cls):
@@ -40,7 +46,7 @@ class ModelOperations(object):
         """
         all_entries = cls.query
         return all_entries
- 
+
     @classmethod
     def count(cls):
         """

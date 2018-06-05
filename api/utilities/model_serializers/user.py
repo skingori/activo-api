@@ -1,6 +1,6 @@
 """ Module with user model schemas. """
 import re
-from marshmallow import (ValidationError, fields, post_load)
+from marshmallow import ValidationError, fields, post_load
 
 from api.models.user import User
 from ..validators.name_validator import name_validator

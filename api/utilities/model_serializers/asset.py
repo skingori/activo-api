@@ -1,9 +1,9 @@
 """ Module for asset model schema. """
 
-from marshmallow import fields, post_load, validate
+from marshmallow import fields, post_load
 
 from .base_schemas import BaseSchema
-from api.models.assets import Asset
+from api.models.asset import Asset
 from ..validators.string_length_validators import string_length_60_validator
 from ..messages.error_messages import serialization_errors
 
