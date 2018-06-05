@@ -2,6 +2,9 @@
 from os import getenv
 from flask import Flask
 from flask_migrate import Migrate
+from flask_restplus import Api
+
+api = Api()
 
 from config import config
 from api.models.database import db
@@ -25,6 +28,9 @@ def create_app(config=config[config_name]):
 
     # bind app to db
     db.init_app(app)
+
+    # bind flask_restplus to app
+    api.init_app(app)
 
     # import all models
     from api.models import User, Asset, AssetCategory, Attribute
