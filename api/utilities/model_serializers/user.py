@@ -31,7 +31,8 @@ class UserSchema(BaseSchema):
     """ User model schema. """
 
     name = fields.String(required=True,
-                         validate=string_validator,
+                         validate=(string_length_60_validator,
+                                   string_validator),
                          error_messages={
                              'required':
                              serialization_errors['field_required']})

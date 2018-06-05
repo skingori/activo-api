@@ -1,7 +1,8 @@
 from marshmallow import fields, post_load, validate
 
 from .base_schemas import BaseSchema
-from .validators.validators import string_length_60_validator
+from .validators.validators import (string_length_60_validator,
+                                    string_validator)
 from ..messages.error_messages import serialization_errors
 from api.models.attribute import Attribute
 
@@ -10,7 +11,8 @@ class AttributeSchema(BaseSchema):
     """Attribute model schema"""
 
     label = fields.String(required=True,
-                          validate=string_length_60_validator,
+                          validate=(string_length_60_validator,
+                                    string_validator),
                           error_messages={
                               'required':
                               serialization_errors['field_required']})
@@ -19,7 +21,8 @@ class AttributeSchema(BaseSchema):
                                      'required':
                                      serialization_errors['field_required']})
     input_control = fields.String(required=True,
-                                  validate=string_length_60_validator,
+                                  validate=(string_length_60_validator,
+                                            string_validator),
                                   error_messages={
                                       'required':
                                       serialization_errors['field_required']})
