@@ -1,7 +1,7 @@
 from marshmallow import fields, post_load, validate
 
 from .base_schemas import BaseSchema
-from ..models.asset_category import AssetCategory
+from api.models.asset_category import AssetCategory
 
 
 class AssetCategorySchema(BaseSchema):

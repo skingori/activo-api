@@ -25,16 +25,5 @@ def index():
     return jsonify(dict(message='Welcome to the AM api'))
 
 
-# route to demonstrate how marshmallow works
-@app.route('/register', methods=['POST'])
-def registration():
-    from api.serializers.user import UserSchema
-    schema = UserSchema()
-    new_user = schema.load_into_schema(request.data)
-    new_user = new_user.save()
-
-    return jsonify(dict(message='New user created.'))
-
-
 if __name__ == '__main__':
     app.run()
