@@ -53,6 +53,8 @@ class ModelOperations(object):
         relationships = self.get_child_relationships()
         if delete_validator(relationships):
             self.deleted = True
+            if request.decoded_token:
+                self.deleted_by = request.decoded_token['UserInfo']['name']
             db.session.add(self)
             db.session.commit()
         else:
