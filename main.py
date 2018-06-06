@@ -7,10 +7,9 @@ from api import api_blueprint
 from config import config
 from api.models.database import db
 
-api = Api(api_blueprint, doc='/docs')
-
-
 config_name = getenv('FLASK_ENV', default='production')
+
+api = Api(api_blueprint, doc=False)
 
 
 def initialize_errorhandlers(application):

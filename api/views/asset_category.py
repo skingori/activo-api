@@ -20,7 +20,6 @@ class AssetCategoryResource(Resource):
             fields = request.get_json()
             attributes = list(eval(fields['attributes'][1:-1]))
         except Exception:
-            print('---------------Daaaa')
             pass
             raise ValidationError(
                 { 

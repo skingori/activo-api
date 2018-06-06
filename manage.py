@@ -9,7 +9,7 @@ from config import config
 from seeders import seed_asset_category
 from seeders import seed_inputs_controls
 
-from api.views import rosources
+from api import views
 
 
 # get flask config name from env or default to production config
