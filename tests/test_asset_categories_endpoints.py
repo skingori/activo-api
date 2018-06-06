@@ -1,4 +1,5 @@
 "Module for asset category endpoint test"
+import pytest
 
 from os import getenv
 
@@ -22,7 +23,8 @@ class TestAssetCategoriesEndpoints:
     """
 
     def test_asset_categories_stats_endpoint(self, client, new_asset_category,
-                                             init_db, auth_header):
+                                             init_db, auth_header, request_ctx,
+                                             mock_request_obj_decoded_token):
         """
         Should pass when getting asset categories stats
         """
@@ -112,6 +114,7 @@ class TestAssetCategoriesEndpoints:
         assert response.status_code == 422
         assert response_json['status'] == 'error'
         assert response_json['errors']['0']['label'][0] == serialization_errors['field_required']  # noqa
+
     def test_get_one_asset_category(self, client, init_db, auth_header):
         """
         Tests that a single asset category can be retrieved
@@ -155,6 +158,51 @@ class TestAssetCategoriesEndpoints:
 
         response = client.get('{}/asset-categories/L@@'.format(api_v1_base_url),
                               headers=auth_header)
+
+        response_json = json.loads(response.data.decode(CHARSET))
+        assert response.status_code == 400
+        assert response_json['status'] == 'error'
+        assert response_json['message'] == 'Invalid id'
+
+    def test_delete_asset_category(self, client, init_db, auth_header):
+        """
+            Tests that a single asset category can be deleted
+        """
+        asset_category = AssetCategory(name='TestLaptop')
+        asset_category.save()
+
+        response = client.delete('{}/asset-categories/{}'.format(
+            api_v1_base_url, asset_category.id), headers=auth_header)
+
+        response_json = json.loads(response.data.decode(CHARSET))
+
+        assert response.status_code == 200
+        assert response_json['status'] == 'success'
+
+    def test_delete_asset_category_not_found(self, client, init_db,
+                                             auth_header):
+        """
+            Tests that 404 is returned for a category that does not exist on
+            delete
+        """
+
+        response = client.delete('{}/asset-categories/-L2'.format(
+            api_v1_base_url), headers=auth_header)
+        response_json = json.loads(response.data.decode(CHARSET))
+        assert response.status_code == 404
+        assert response_json['status'] == 'error'
+        assert response_json['message'] == 'Asset category not found'
+
+    def test_delete_asset_category_invalid_id(self, client, init_db,
+                                              auth_header):
+        """
+        Tests that 400 is returned when id is invalid
+        """
+        asset_category = AssetCategory(name='TestLaptop')
+        asset_category.save()
+
+        response = client.delete('{}/asset-categories/LX@'.format(
+            api_v1_base_url), headers=auth_header)
 
         response_json = json.loads(response.data.decode(CHARSET))
         assert response.status_code == 400

@@ -23,6 +23,7 @@ class User:
         return {
             'id': self.id,
             'email': self.email,
+            'name': self.name,
             'first_name': self.first_name,
             'last_name': self.last_name,
             'picture': self.picture,

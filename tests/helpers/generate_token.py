@@ -21,7 +21,7 @@ def generate_token(exp=None):
     """
 
     secret_key = getenv('JWT_SECRET_KEY')
-    payload = {'userInfo': user_one.to_dict()}
+    payload = {'UserInfo': user_one.to_dict()}
     payload.__setitem__('exp', exp) if exp is not None else ''
     token = jwt.encode(payload, secret_key, algorithm='RS256').decode(CHARSET)
     return 'Bearer {0}'.format(token)

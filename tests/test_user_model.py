@@ -24,6 +24,6 @@ class TestUserModel:
     assert user_query.filter(new_user.name == 'Ayobami').count() == 1
     assert isinstance(user_query.filter(new_user.name == 'Ayobami').all(), list)
 
-  def test_delete(self, new_user):
+  def test_delete(self, new_user, request_ctx, mock_request_obj_decoded_token):
     new_user.delete()
     

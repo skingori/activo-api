@@ -2,6 +2,7 @@
 import os
 
 import pytest
+from flask import current_app, request
 
 from main import create_app
 from config import config
@@ -86,7 +87,8 @@ def new_asset_category_with_non_deleted_asset(app):
 
 
 @pytest.fixture(scope='module')
-def new_asset_category_with_deleted_asset(app):
+def new_asset_category_with_deleted_asset(app, request_ctx,
+                                          mock_request_obj_decoded_token):
     """Fixture for asset category with a deleted child asset."""
     asset_category = AssetCategory(name='Laptop')
     asset_category = asset_category.save()
@@ -115,3 +117,31 @@ def auth_header(generate_token=generate_token):
         'Accept': MIMETYPE
 
     }
+
+
+@pytest.fixture(scope='module')
+def request_ctx():
+    """
+    Setup a request client, this gets executed for each test module.
+
+    :param app: Pytest fixture
+    :return: Flask request client
+    """
+    ctx = current_app.test_request_context()
+    ctx.push()
+    yield ctx
+    ctx.pop()
+
+
+@pytest.fixture(scope='module')
+def mock_request_obj_decoded_token():
+    """
+    Mock decoded_token from request object
+    """
+    decoded_token = setattr(request, 'decoded_token', {
+        'UserInfo': {
+            'name': 'Ayobami'
+        }
+    })
+
+    return decoded_token

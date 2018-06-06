@@ -29,3 +29,4 @@ class AssetCategory(AuditableBaseModel):
 AssetCategory.assets_count = column_property(
     select([func.count(Asset.id)])
     .where(Asset.asset_category_id == AssetCategory.id))
+

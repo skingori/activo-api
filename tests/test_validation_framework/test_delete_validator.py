@@ -8,13 +8,17 @@ from api.middlewares.base_validator import ValidationError
 class TestDeleteValidator(object):
     """Class to test model delete validator."""
 
-    def test_delete_model_with_no_child_relationships(self, new_user, init_db):
+    def test_delete_model_with_no_child_relationships(self, new_user, init_db,
+                                                      request_ctx,
+                                                      mock_request_obj_decoded_token):
         """Test delete on model with no children."""
         new_user.save()
         assert new_user.delete() is None
 
     def test_delete_model_with_child_relationships(self, init_db,
-                                                   new_asset_category):
+                                                   new_asset_category,
+                                                   request_ctx,
+                                                   mock_request_obj_decoded_token):
         """Test delete on model with children all deleted."""
         saved_category = new_asset_category.save()
         assert saved_category.delete() is None

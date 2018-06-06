@@ -37,5 +37,6 @@ class TestAttributeModel:
         attribute.save()
         assert Attribute.get(attribute.id) == attribute
 
-    def test_delete(self, new_asset_category):
+    def test_delete(self, new_asset_category, request_ctx,
+                    mock_request_obj_decoded_token):
         new_asset_category.attributes[0].delete()
