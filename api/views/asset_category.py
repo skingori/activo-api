@@ -5,13 +5,14 @@ from api.middlewares.base_validator import ValidationError
 from api.models.asset_category import AssetCategory
 from api.models.attribute import Attribute
 from api.models.input_control import InputControl
-from api.utilities.to_json import to_json
+# from api.utilities.to_json import to_json
 from main import api
+from api.middlewares.token_required import token_required
 
 
 @api.route('/asset-categories')
 class AssetCategoryResource(Resource):
-
+    @token_required
     def post(self):
         """Process / routes and returns 'Welcome to the AM api' as json."""
 
@@ -19,6 +20,8 @@ class AssetCategoryResource(Resource):
             fields = request.get_json()
             attributes = list(eval(fields['attributes'][1:-1]))
         except Exception:
+            print('---------------Daaaa')
+            pass
             raise ValidationError(
                 { 
                     'message': 'Please provide a valid json',

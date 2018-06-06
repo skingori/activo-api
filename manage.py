@@ -7,6 +7,9 @@ from main import create_app
 from config import config
 
 from seeders import seed_asset_category
+from seeders import seed_inputs_controls
+
+from api.views import rosources
 
 
 # get flask config name from env or default to production config
@@ -25,6 +28,7 @@ def index():
 
 @app.cli.command()
 def seed_database():
+    seed_inputs_controls()
     seed_asset_category()
 
 

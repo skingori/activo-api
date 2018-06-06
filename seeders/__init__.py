@@ -1,4 +1,5 @@
 from api.models import AssetCategory, Asset, Attribute
+from .seed_input_controls import seed_inputs_controls
 
 
 def seed_asset_category():
