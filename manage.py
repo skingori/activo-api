@@ -16,7 +16,7 @@ config_name = getenv('FLASK_ENV', default='production')
 app = create_app(config[config_name])
 
 # create marshmallow object to handle serialization
-ma = Marshmallow(app)
+marshmallow = Marshmallow(app)
 
 
 @app.route('/')

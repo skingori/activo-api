@@ -10,7 +10,7 @@ class Attribute(BaseModel):
     label = db.Column(db.String(60), nullable=False)
     is_required = db.Column(db.Boolean, nullable=False)
     input_control = db.Column(db.String(60), nullable=False)
-    choices = db.Column(db.String(250), nullable=False)
+    choices = db.Column(db.String(250), nullable=True)
     asset_category_id = db.Column(db.String,
                                   db.ForeignKey('asset_categories.id'),
                                   nullable=False)
