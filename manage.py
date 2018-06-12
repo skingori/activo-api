@@ -1,22 +1,24 @@
 """Module with application entry point."""
 from os import getenv
-from flask import jsonify
+from flask import jsonify, request
+from flask_marshmallow import Marshmallow
 from api.middlewares.token_required import token_required
 
 from main import create_app
 from config import config
 
 from seeders import seed_asset_category
-from seeders import seed_inputs_controls
 
 from api import views
-
 
 # get flask config name from env or default to production config
 config_name = getenv('FLASK_ENV', default='production')
 
 # create application object
 app = create_app(config[config_name])
+
+# create marshmallow object to handle serialization
+marshmallow = Marshmallow(app)
 
 
 @app.route('/')
@@ -28,7 +30,6 @@ def index():
 
 @app.cli.command()
 def seed_database():
-    seed_inputs_controls()
     seed_asset_category()
 
 

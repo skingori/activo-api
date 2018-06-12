@@ -1,62 +1,63 @@
-from flask import jsonify, request
 from flask_restplus import Resource
-# from api.views import api_blueprint
-from api.middlewares.base_validator import ValidationError
-from api.models.asset_category import AssetCategory
-from api.models.attribute import Attribute
-from api.models.input_control import InputControl
-# from api.utilities.to_json import to_json
+from flask import request, jsonify
+
+from api.models import AssetCategory
 from main import api
 from api.middlewares.token_required import token_required
+from api.utilities.model_serializers.asset_category import AssetCategorySchema
+from api.utilities.model_serializers.attribute import AttributeSchema
+import json
 
 
 @api.route('/asset-categories')
 class AssetCategoryResource(Resource):
     @token_required
     def post(self):
-        """Process / routes and returns 'Welcome to the AM api' as json."""
+        asset_category_schema = AssetCategorySchema()
+        print('---------------Daata', request.get_json())
+        asset_category = asset_category_schema.load_into_schema(request.get_json())
 
-        try:
-            fields = request.get_json()
-            attributes = list(eval(fields['attributes'][1:-1]))
-        except Exception:
-            pass
-            raise ValidationError(
-                { 
-                    'message': 'Please provide a valid json',
-                    'description': 'Json keys and values should be in string'
-                }
-            )
-        asset_category = AssetCategory(name=fields['name'])
+        attributes_schema = AttributeSchema(many=True)
+        attributes = attributes_schema.load_into_schema(request.get_json()['attributes'])
 
-        asset_category.save()
-             
-        custom_attributes = []
+        asset_category.attributes = attributes
+        asset_category = asset_category.save()
 
-        input_control = InputControl.query.filter_by(name='text').first()
+        custom_attributes = attributes_schema.dump(attributes)
 
-        for attribute in attributes:
-            category_atrribute = Attribute(
-                name=attribute['name'],
-                asset_category_id=asset_category.id,
-                is_required=attribute['is_required'].lower() == 'true',
-                input_control_id=input_control.id
-            )
+        return jsonify({
+            "data": {
+                "name": asset_category.name,
+                "customAttributes": custom_attributes.data
+            }
+        })
 
-            category_atrribute_json = to_json(category_atrribute)
-            del(category_atrribute_json['input_control_id'])
-            category_atrribute_json['input_control'] = input_control.name
-            category_atrribute.save()
-            custom_attributes.append(category_atrribute_json)
 
-        return jsonify(
-            dict(
-                data=dict(
-                    message='Category Created',
-                    id=asset_category.id,
-                    name=asset_category.name,
-                    description=asset_category.description,
-                    custom_attributes=custom_attributes
-                )
-            )
-            ), 201
+
+
+
+@api.route('/asset-categories/stats')
+class AssetCategoryStats(Resource):
+    """
+    Resource class for getting asset categories and
+    their corresponding asset counts
+    """
+
+    @token_required
+    def get(self):
+        """
+        Gets asset categories and the corresponding asset count
+        """
+
+        asset_categories = AssetCategory._query().all()
+        data = []
+        for asset_category in asset_categories:
+            data.append({
+                'id': asset_category.id,
+                'name': asset_category.name,
+                'asset_count': asset_category.assets_count
+            })
+        return {
+            'status': 'success',
+            'data': data
+        }

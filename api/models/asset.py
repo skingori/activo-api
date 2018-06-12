@@ -6,7 +6,6 @@ class Asset(AuditableBaseModel):
     """
     Model for assets
     """
-
     tag = db.Column(db.String(60), nullable=False)
     serial = db.Column(db.String(60), nullable=False)
     asset_category_id = db.Column(db.String,

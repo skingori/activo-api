@@ -5,7 +5,7 @@ from config import config
 from api.models.database import db as _db
 from api.models.user import User
 from api.models.asset_category import AssetCategory
-from api.models.asset import Asset
+from .helpers.generate_token import generate_token as test_token
 
 config_name = 'testing'
 
@@ -59,6 +59,10 @@ def new_asset_category(app):
     }
     asset_category = AssetCategory(**params)
     return asset_category
+
+@pytest.fixture(scope='module')
+def auth_header(test_token=test_token):
+    return {'Authorization': test_token()}
 
 
 @pytest.fixture(scope='session')

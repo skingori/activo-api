@@ -1,1 +1,1 @@
-from .asset_category import AssetCategoryResource
+from .asset_category import AssetCategoryStats

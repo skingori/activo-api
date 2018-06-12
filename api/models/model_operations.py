@@ -1,8 +1,15 @@
-from .database import db
+"""Module for generic model operations mixin."""
 from datetime import datetime
 from uuid import uuid4
 
+from .database import db
+from ..utilities.validators.delete_validator import delete_validator
+from ..middlewares.base_validator import ValidationError
+from ..utilities.messages.error_messages import database_errors
+
+
 class ModelOperations(object):
+    """Mixin class with generic model operations."""
     def save(self):
         """
         Save a model instance
@@ -18,7 +25,7 @@ class ModelOperations(object):
         """
         for field, value in kwargs.items():
             setattr(self, field, value)
-            db.session.commit()
+        db.session.commit()
 
     @classmethod
     def get(cls, id):
@@ -27,12 +34,25 @@ class ModelOperations(object):
         """
         return cls.query.get(id)
 
+    def get_relationships(self):
+        """
+        Method to get all child relationships a model has. Overide in the
+        subclass if the model has child models.
+        """
+        raise NotImplementedError("The get_relationships method must be overriden in all child model classes") #noqa
+
     def delete(self):
         """
-        Delete a model instance.
+        Soft delete a model instance.
         """
-        db.session.delete(self)
-        db.session.commit()
+        if delete_validator(self.get_relationships()):
+            self.deleted = True
+            db.session.add(self)
+            db.session.commit()
+        else:
+            raise ValidationError(dict(
+                message=database_errors['model_delete_children']),
+                                  status_code=403)
 
     @classmethod
     def _query(cls):
@@ -41,7 +61,7 @@ class ModelOperations(object):
         """
         all_entries = cls.query
         return all_entries
- 
+
     @classmethod
     def count(cls):
         """

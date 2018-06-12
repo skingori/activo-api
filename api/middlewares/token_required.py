@@ -2,7 +2,7 @@
 
 from flask import request
 from os import getenv as env
-from base64 import b64decode
+from base64 import b64decode, b64encode
 import jwt
 from functools import wraps
 
@@ -43,8 +43,12 @@ def token_required(function):
 
         try:
             token = token.split(' ')[1]
-            public_key64 = env('JWT_PUBLIC_KEY')
-            public_key = b64decode(public_key64).decode('utf-8')
+
+            if(env('FLASK_ENV') == 'testing'):
+                public_key = env('JWT_PUBLIC_KEY_TEST')
+            else:
+                public_key64 = env('JWT_PUBLIC_KEY')
+                public_key = b64decode(public_key64).decode('utf-8')
             decoded_token = jwt.decode(
                 token,
                 public_key,
@@ -54,20 +58,25 @@ def token_required(function):
                     'verify_exp': True
                 }
             )
-        except ValueError:
+        except ValueError as error:
+            print('ValueError------', error)
             raise ValidationError(SERVER_ERROR_MESSAGE, 500)
 
-        except TypeError:
+        except TypeError as error:
+            print('Type error------', error)
             raise ValidationError(SERVER_ERROR_MESSAGE, 500)
 
-        except jwt.ExpiredSignatureError:
+        except jwt.ExpiredSignatureError as error:
+            print('------ExpiredSignatureError-------', error)
             raise ValidationError(EXPIRED_TOKEN_MSG)
 
         except jwt.DecodeError as error:
             if str(error) == 'Signature verification failed':
+                print('------DecodeError-------', error)
                 raise ValidationError(SIGNATURE_ERROR, 500)
 
             else:
+                print('-------------Decoderror', error)
                 raise ValidationError(INVALID_TOKEN_MSG, 401)
 
         # setting the payload to the request object and can be accessed with \
