@@ -6,6 +6,7 @@ from api.utilities.constants import (
     SIGNATURE_ERROR, EXPIRED_TOKEN_MSG,
     INVALID_TOKEN_MSG
 )
+from .helpers.generate_token import generate_token
 
 
 class TestTokenRequiredMiddleware:
@@ -19,8 +20,16 @@ class TestTokenRequiredMiddleware:
 
     def test_token_required_with_invalid_token(self, client):
         response = client.get('/api/v1/asset-categories/stats',
-                              headers={'Authorization': 'Bearer kkk'})
+                              headers={'Authorization': 'Bearer invalid_token'})
         response_json = json.loads(response.data.decode('utf-8'))
 
         assert response_json['status_code'] == 401
         assert response_json['message'] == INVALID_TOKEN_MSG['message']
+        
+    def test_token_required_with_expired_token(self, client):
+        response = client.get('/api/v1/asset-categories/stats',
+                              headers={'Authorization': generate_token(0)})
+        response_json = json.loads(response.data.decode('utf-8'))
+
+        assert response_json['status_code'] == 400
+        assert response_json['message'] == EXPIRED_TOKEN_MSG['message']
