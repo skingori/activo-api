@@ -5,6 +5,7 @@ from config import config
 from api.models.database import db as _db
 from api.models.user import User
 from api.models.asset_category import AssetCategory
+from .helpers.generate_token import generate_token
 
 config_name = 'testing'
 
@@ -65,4 +66,8 @@ def init_db(app):
     _db.create_all()
     yield _db
     _db.drop_all()
+
+@pytest.fixture(scope='module')
+def auth_header(generate_token=generate_token):
+    return {'Authorization': generate_token()}
 

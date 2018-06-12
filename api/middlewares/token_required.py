@@ -5,30 +5,16 @@ from os import getenv as env
 from base64 import b64decode
 import jwt
 from functools import wraps
+from api.utilities.constants import (
+    NO_BEARER_MSG, NO_TOKEN_MSG,
+    SERVER_ERROR_MESSAGE,
+    SIGNATURE_ERROR, EXPIRED_TOKEN_MSG,
+    INVALID_TOKEN_MSG
+)
 
 
 def token_required(function):
     """Authentication decorator. Validates token from the client"""
-
-    INVALID_TOKEN_MSG = dict(
-        message="Authorization failed due to an Invalid token."
-    )
-    EXPIRED_TOKEN_MSG = dict(
-        message="Token expired. Please login to get a new token"
-    )
-    SIGNATURE_ERROR = dict(
-        message="Cannot verify the signature of the token provided as \
-        it was signed by a non matching private key"
-    )
-    SERVER_ERROR_MESSAGE = dict(
-        message="Authorization failed. Please contact support."
-    )
-    NO_BEARER_MSG = dict(
-        message="Bad request. The token should begin with the word 'Bearer'."
-    )
-    NO_TOKEN_MSG = dict(
-        message="Bad request. Header does not contain an authorization token."
-    )
 
     @wraps(function)
     def decorated_function(*args, **kwargs):
@@ -43,8 +29,11 @@ def token_required(function):
 
         try:
             token = token.split(' ')[1]
-            public_key64 = env('JWT_PUBLIC_KEY')
-            public_key = b64decode(public_key64).decode('utf-8')
+            if(env('FLASK_ENV') == 'testing'):
+                public_key = env('JWT_PUBLIC_KEY_TEST')
+            else:
+                public_key64 = env('JWT_PUBLIC_KEY')
+                public_key = b64decode(public_key64).decode('utf-8')
             decoded_token = jwt.decode(
                 token,
                 public_key,
