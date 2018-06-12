@@ -1,3 +1,5 @@
+"Module for storing constants"
+
 INVALID_TOKEN_MSG = dict(
     message="Authorization failed due to an Invalid token."
 )
@@ -17,3 +19,14 @@ NO_BEARER_MSG = dict(
 NO_TOKEN_MSG = dict(
     message="Bad request. Header does not contain an authorization token."
 )
+
+UTF_8 = 'utf-8'
+
+jwt_errors = {
+    'INVALID_TOKEN_MSG': INVALID_TOKEN_MSG,
+    'EXPIRED_TOKEN_MSG': EXPIRED_TOKEN_MSG,
+    'SIGNATURE_ERROR': SIGNATURE_ERROR,
+    'SERVER_ERROR_MESSAGE': SERVER_ERROR_MESSAGE,
+    'NO_BEARER_MSG': NO_BEARER_MSG,
+    'NO_TOKEN_MSG': NO_TOKEN_MSG,
+}
