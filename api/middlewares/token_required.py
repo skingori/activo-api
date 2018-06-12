@@ -18,7 +18,7 @@ def token_required(function):
 
     @wraps(function)
     def decorated_function(*args, **kwargs):
-        token = request.headers.get('Authorization')
+        token = request.headers.get('Authorization').strip()
         from .base_validator import ValidationError
 
         if not token:
@@ -28,7 +28,7 @@ def token_required(function):
             raise ValidationError(NO_BEARER_MSG)
 
         try:
-            token = token.split(' ')[1]
+            token = token.split(' ')[-1]
             if(env('FLASK_ENV') == 'testing'):
                 public_key = env('JWT_PUBLIC_KEY_TEST')
             else:

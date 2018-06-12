@@ -7,7 +7,6 @@ class TestAssetCategoriesEndpoints:
         response = client.get('/api/v1/asset-categories/stats',
                               headers=auth_header)
         response_json = json.loads(response.data.decode('utf-8'))
-
         assert response.status_code == 200
         assert response_json['status'] == 'success'
         assert isinstance(response_json['data'], list)
