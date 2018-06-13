@@ -1,7 +1,6 @@
 import os
 
 import pytest
-
 from main import create_app
 from config import config
 from api.models.database import db as _db

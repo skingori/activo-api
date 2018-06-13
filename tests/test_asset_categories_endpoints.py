@@ -7,6 +7,9 @@ from api.utilities.constants import CHARSET
 api_v1_base_url = getenv('API_BASE_URL_V1')
 
 
+api_v1_base_url = getenv('API_BASE_URL_V1')
+
+
 class TestAssetCategoriesEndpoints:
     def test_asset_categories_stats_endpoint(self, client, new_asset_category, init_db, auth_header):
         new_asset_category.save()
