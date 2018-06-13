@@ -1,5 +1,6 @@
 """Module for generic model operations mixin."""
 from .database import db
+from flask import request
 from api.utilities.dynamic_filter import DynamicFilter
 from ..utilities.validators.delete_validator import delete_validator
 from ..middlewares.base_validator import ValidationError
@@ -58,7 +59,7 @@ class ModelOperations(object):
                                   status_code=403)
 
     @classmethod
-    def _query(cls, filter_condition):
+    def _query(cls, filter_condition=None):
         """
         Returns filtered database entries. It takes model class and
         filter_condition and returns database entries based on the filter
@@ -68,8 +69,11 @@ class ModelOperations(object):
         :param filter_condition:
         :return: an array of filtered records
         """
-        dynamic_filter = DynamicFilter(cls)
-        return dynamic_filter.filter_query(filter_condition)
+
+        if filter_condition:
+            dynamic_filter = DynamicFilter(cls)
+            return dynamic_filter.filter_query(filter_condition)
+        return cls.query
 
     @classmethod
     def count(cls):

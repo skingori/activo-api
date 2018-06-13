@@ -5,7 +5,8 @@ from os import getenv as env
 from base64 import b64decode
 import jwt
 from functools import wraps
-from api.utilities.constants import jwt_errors, UTF_8
+from api.utilities.constants import UTF_8
+from api.utilities.messages.error_messages import jwt_errors
 
 
 def token_required(function):
@@ -13,7 +14,7 @@ def token_required(function):
 
     @wraps(function)
     def decorated_function(*args, **kwargs):
-        token = request.headers.get('Authorization').strip()
+        token = request.headers.get('Authorization')
         from .base_validator import ValidationError
 
         if not token:
@@ -38,7 +39,7 @@ def token_required(function):
                     'verify_exp': True
                 }
             )
-        except ValueError:
+        except ValueError as error:
             raise ValidationError(jwt_errors['SERVER_ERROR_MESSAGE'], 500)
 
         except TypeError:

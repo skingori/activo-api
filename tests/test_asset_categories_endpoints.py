@@ -1,7 +1,9 @@
 from os import getenv
 from flask import json
-from api import api_v1_base_url
 from api.utilities.constants import UTF_8
+
+api_v1_base_url = getenv('API_BASE_URL_V1')
+
 
 class TestAssetCategoriesEndpoints:
     def test_asset_categories_stats_endpoint(self, client, new_asset_category, init_db, auth_header):

@@ -1,11 +1,12 @@
+from os import getenv
 import pytest
-
 from main import create_app
 from config import config
 from api.models.database import db as _db
 from api.models.user import User
 from api.models.asset_category import AssetCategory
 from .helpers.generate_token import generate_token
+from api.utilities.constants import MIMETYPE
 
 config_name = 'testing'
 
@@ -61,13 +62,19 @@ def new_asset_category(app):
     return asset_category
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='module')
 def init_db(app):
     _db.create_all()
     yield _db
+    _db.session.close()
     _db.drop_all()
 
 @pytest.fixture(scope='module')
 def auth_header(generate_token=generate_token):
-    return {'Authorization': generate_token()}
+    return {
+        'Authorization': generate_token(),
+        'Content-Type': MIMETYPE,
+        'Accept': MIMETYPE
+
+    }
 
