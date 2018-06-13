@@ -3,6 +3,7 @@
 from flask import request
 
 from .database import db
+from flask import request
 from api.utilities.dynamic_filter import DynamicFilter
 from ..utilities.validators.delete_validator import delete_validator
 from ..middlewares.base_validator import ValidationError
