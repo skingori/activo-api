@@ -36,7 +36,6 @@ class TestAssetCategoryModel:
         assert new_asset_category.attributes[0] == attribute
 
     def test_count(self, new_asset_category):
-        print('-----------rrrrr',  new_asset_category.count())
         assert new_asset_category.count() == 1
 
     def test_query(self, new_asset_category):

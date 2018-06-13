@@ -79,4 +79,3 @@ def auth_header(generate_token=generate_token):
         'Accept': MIMETYPE
 
     }
-

@@ -11,12 +11,19 @@ import json
 
 @api.route('/asset-categories')
 class AssetCategoryResource(Resource):
+    """
+    Resource class for peforming crud on the asset categories
+    """
+
     @token_required
     def post(self):
+        """
+        Creates asset categories and the corresponding attributes
+        """
         asset_category_schema = AssetCategorySchema()
         asset_category = asset_category_schema.load_object_into_schema(request.get_json())
 
-        attributes_schema = AttributeSchema(many=True)
+        attributes_schema = AttributeSchema(many=True, exclude=['id', 'deleted'])
         attributes = attributes_schema.load_object_into_schema(request.get_json()['attributes'])
 
         asset_category.attributes = attributes
@@ -24,12 +31,15 @@ class AssetCategoryResource(Resource):
 
         custom_attributes = attributes_schema.dump(attributes)
 
-        return jsonify({
+        response =  jsonify({
+            "status": 'success',
             "data": {
                 "name": asset_category.name,
                 "customAttributes": custom_attributes.data
             }
         })
+        response.status_code = 201
+        return response
 
 
 
