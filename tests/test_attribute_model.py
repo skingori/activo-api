@@ -14,11 +14,11 @@ class TestAttributeModel:
         assert attribute == attribute.save()
 
     def test_count(self):
-        assert Attribute.count() == 1
+        assert Attribute.count() == 2
 
     def test_query(self):
         attribute_query = Attribute._query()
-        assert attribute_query.count() == 1
+        assert attribute_query.count() == 2
         assert isinstance(attribute_query.all(), list)
 
     def test_update(self, new_asset_category):

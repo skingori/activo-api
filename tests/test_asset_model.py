@@ -9,11 +9,11 @@ class TestAssetModel:
         assert asset == asset.save()
 
     def test_count(self):
-        assert Asset.count() == 1
+        assert Asset.count() == 2
 
     def test_query(self):
         asset_query = Asset._query()
-        assert asset_query.count() == 1
+        assert asset_query.count() == 2
         assert isinstance(asset_query.all(), list)
 
     def test_update(self, new_asset_category):

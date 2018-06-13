@@ -18,6 +18,7 @@ def generate_token(exp=None):
     result:
         token: This is the bearer token in this format 'Bearer token'
     """
+    print('------------------Hey')
 
     secret_key = getenv('JWT_SECRET_KEY')
     payload = {'userInfo': user_one.to_dict()}
