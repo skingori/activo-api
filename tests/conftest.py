@@ -1,3 +1,4 @@
+"""Module for setting up fixtures for testing"""
 import os
 
 import pytest
@@ -66,7 +67,13 @@ def new_asset_category(app):
 
 @pytest.fixture(scope='module')
 def new_asset_category_with_non_deleted_asset(app):
-    """Fixture for asset category with a non deleted child asset."""
+    """
+    The module scope is used here to prevent a test module data leaking into
+    another.
+
+    Fixture for asset category with a non deleted child asset.
+    """
+
     asset_category = AssetCategory(name='Laptop')
     asset_category = asset_category.save()
 
