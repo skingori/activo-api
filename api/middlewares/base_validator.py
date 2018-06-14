@@ -12,7 +12,7 @@ class ValidationError(Exception):
         Exception.__init__(self)
         self.status_code = 400
         self.error = error
-        self.error['status'] = 'Failure'
+        self.error['status'] = 'error'
         self.error['message'] = error['message']
 
         if status_code is not None:

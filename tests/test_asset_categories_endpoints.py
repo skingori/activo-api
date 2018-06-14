@@ -1,6 +1,6 @@
 from os import getenv
 from flask import json
-from api.utilities.constants import UTF_8
+from api.utilities.constants import CHARSET
 
 api_v1_base_url = getenv('API_BASE_URL_V1')
 
@@ -10,7 +10,7 @@ class TestAssetCategoriesEndpoints:
         new_asset_category.save()
         response = client.get(f'{api_v1_base_url}/asset-categories/stats',
                               headers=auth_header)
-        response_json = json.loads(response.data.decode(UTF_8))
+        response_json = json.loads(response.data.decode(CHARSET))
         assert response.status_code == 200
         assert response_json['status'] == 'success'
         assert isinstance(response_json['data'], list)
