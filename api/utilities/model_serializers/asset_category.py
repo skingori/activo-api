@@ -17,8 +17,12 @@ class AssetCategorySchema(BaseSchema):
                          error_messages={
                              'required':
                              serialization_errors['field_required']})
+    assets_count = fields.Method('get_asset_counts')
 
     @post_load
     def create_asset_category(self, data):
         """Return asset category object after successful loading of data"""
         return AssetCategory(**data)
+
+    def get_asset_counts(self, obj):
+        return obj.assets_count
