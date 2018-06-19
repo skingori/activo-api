@@ -5,8 +5,7 @@ import pytest
 from main import create_app
 from config import config
 from api.models.database import db as _db
-from api.models.user import User
-from api.models.asset_category import AssetCategory
+from api.models import User, Asset, AssetCategory, Attribute
 from .helpers.generate_token import generate_token
 from api.utilities.constants import MIMETYPE
 
@@ -66,6 +65,35 @@ def new_asset_category(app):
 
 
 @pytest.fixture(scope='module')
+def new_asset_category_with_non_deleted_asset(app):
+    """Fixture for asset category with a non deleted child asset."""
+    asset_category = AssetCategory(name='Laptop')
+    asset_category = asset_category.save()
+
+    asset = Asset(tag='abc', serial='def',
+                  asset_category_id=asset_category.id)
+
+    asset = asset.save()
+
+    return asset_category
+
+
+@pytest.fixture(scope='module')
+def new_asset_category_with_deleted_asset(app):
+    """Fixture for asset category with a deleted child asset."""
+    asset_category = AssetCategory(name='Laptop')
+    asset_category = asset_category.save()
+
+    asset = Asset(tag='abc', serial='def',
+                  asset_category_id=asset_category.id)
+
+    asset = asset.save()
+    asset.delete()
+
+    return asset_category
+
+
+@pytest.fixture(scope='module')
 def init_db(app):
     _db.create_all()
     yield _db
@@ -80,4 +108,3 @@ def auth_header(generate_token=generate_token):
         'Accept': MIMETYPE
 
     }
-
