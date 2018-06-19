@@ -1,11 +1,12 @@
 """Module for token generation"""
 
-import jwt
-from base64 import b64encode
-from ..mocks.user import user_one
 from os import getenv
-from base64 import b64decode, encode
 from datetime import datetime
+from base64 import b64encode, b64decode, encode
+
+import jwt
+
+from ..mocks.user import user_one
 from api.utilities.constants import CHARSET
 
 

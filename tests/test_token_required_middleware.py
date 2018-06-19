@@ -1,5 +1,7 @@
 from os import getenv
+
 from flask import json
+
 from api.utilities.messages.error_messages import jwt_errors
 from api.utilities.constants import CHARSET
 from .helpers.generate_token import generate_token

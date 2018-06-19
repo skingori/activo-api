@@ -1,4 +1,5 @@
 import pytest
+
 from api.models import Asset, Attribute, AssetCategory
 from api.middlewares.base_validator import ValidationError
 

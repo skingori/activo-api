@@ -1,5 +1,7 @@
-from os import getenv
+import os
+
 import pytest
+
 from main import create_app
 from config import config
 from api.models.database import db as _db
@@ -9,6 +11,7 @@ from .helpers.generate_token import generate_token
 from api.utilities.constants import MIMETYPE
 
 config_name = 'testing'
+os.environ['FLASK_ENV'] = config_name
 
 
 @pytest.yield_fixture(scope='session')

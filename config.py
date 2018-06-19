@@ -1,8 +1,9 @@
 """Application configuration module."""
-import os
-from os import getenv
-from dotenv import load_dotenv
+
+from os import getenv, environ
 from pathlib import Path  # python3 only
+
+from dotenv import load_dotenv
 
 env_path = Path('.') / '.env'
 load_dotenv(dotenv_path=env_path, verbose=True)
@@ -34,7 +35,7 @@ class TestingConfig(Config):
 
     TESTING = True
     SQLALCHEMY_DATABASE_URI = getenv('TEST_DATABASE_URI', default='postgresql://localhost/activo_test')
-    os.environ['JWT_SECRET_KEY'] = (
+    environ['JWT_SECRET_KEY'] = (
         '-----BEGIN RSA PRIVATE KEY-----\n'
         'MIICWwIBAAKBgQDdlatRjRjogo3WojgGHFHYLugdUWAY9iR3fy4arWNA1KoS8kVw33cJi'
         'bXr8bvwUAUparCwlvdbH6dvEOfou0/gCFQsHUfQrSDv+MuSUMAe8jzKE4qW+jK+xQU9a0'
@@ -50,7 +51,7 @@ class TestingConfig(Config):
         'E9MNUZ2aPFaFp+DyAe+b4nDwuJaW2LURbr8AEZga7oQj0uYxcYw=='
         '\n-----END RSA PRIVATE KEY-----')
 
-    os.environ['JWT_PUBLIC_KEY_TEST'] = (
+    environ['JWT_PUBLIC_KEY_TEST'] = (
         '-----BEGIN PUBLIC KEY-----\n'
         'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDdlatRjRjogo3WojgGHFHYLugdUWAY9'
         'iR3fy4arWNA1KoS8kVw33cJibXr8bvwUAUparCwlvdbH6dvEOfou0/gCFQsHUfQrSDv+M'

@@ -1,10 +1,12 @@
 """Module for token validation"""
 
-from flask import request
 from os import getenv as env
-from base64 import b64decode
-import jwt
 from functools import wraps
+from base64 import b64decode
+
+from flask import request
+import jwt
+
 from api.utilities.constants import CHARSET
 from api.utilities.messages.error_messages import jwt_errors
 

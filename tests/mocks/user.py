@@ -4,6 +4,8 @@ from api.models.push_id import PushID
 
 
 class User:
+    "Class for creating user mocks"
+
     def __init__(self, email, first_name, last_name):
         self.id = PushID().next_id()
         self.email = email
@@ -17,6 +19,7 @@ class User:
         }
 
     def to_dict(self):
+        "COnverts the instance of this class to a dict"
         return {
             'id': self.id,
             'email': self.email,

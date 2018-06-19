@@ -1,5 +1,7 @@
 from os import getenv
+
 from flask import json
+
 from api.utilities.constants import CHARSET
 
 api_v1_base_url = getenv('API_BASE_URL_V1')
