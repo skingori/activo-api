@@ -1,4 +1,7 @@
+import pytest
+
 from api.models import Asset, Attribute, AssetCategory
+from api.middlewares.base_validator import ValidationError
 
 
 class TestAssetCategoryModel:
@@ -41,5 +44,6 @@ class TestAssetCategoryModel:
         assert category_query.count() == 1
         assert isinstance(category_query.all(), list)
 
-    def test_delete(self, new_asset_category):
-        new_asset_category.delete()
+    def test_delete_asset_category_with_child_relationships(self, new_asset_category):
+        with pytest.raises(ValidationError):
+            new_asset_category.delete()
