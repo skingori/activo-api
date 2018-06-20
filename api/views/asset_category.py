@@ -83,27 +83,17 @@ class AssetCategoryStats(Resource):
             'data': data
         }
 
-    #         @token_required
-    # def delete(self, id):
-    #     """
-    #     Soft delete asset categories
-
-    #  single_category.delete()
-
-    #     return {
-    #         'status': 'success',
-    #         'message': 'category deleted successfully'
-
 
 @api.route('/asset-categories/<string:id>')
 class AssetCategoryListResource(Resource):
+    """Asset category list resource"""
+
     @token_required
+    @validate_id
     def get(self, id):
         """
         Get a single asset category
         """
-        if not validate_id(id):
-            raise ValidationError(dict(message='Invalid id'), 400)
 
         single_category = AssetCategory.get(id)
         if not single_category or single_category.deleted:
@@ -124,12 +114,11 @@ class AssetCategoryListResource(Resource):
         }, 200
 
     @token_required
+    @validate_id
     def delete(self, id):
         """
         Soft delete asset categories
         """
-        if not validate_id(id):
-            raise ValidationError(dict(message='Invalid id'), 400)
 
         single_category = AssetCategory.get(id)
         if not single_category or single_category.deleted:
