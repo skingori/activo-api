@@ -12,7 +12,7 @@ load_dotenv(dotenv_path=env_path, verbose=True)
 class Config(object):
     """App base configuration."""
 
-    SQLALCHEMY_DATABASE_URI = getenv('DATABASE_URI', default='postgresql://localhost/activo')
+    SQLALCHEMY_DATABASE_URI = getenv('DATABASE_URI', default='postgresql://andeladeveloper:andeladeveloper@localhost/activo')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
     TESTING = False
@@ -34,7 +34,7 @@ class TestingConfig(Config):
     """App testing configuration."""
 
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = getenv('TEST_DATABASE_URI', default='postgresql://localhost/activo_test')
+    SQLALCHEMY_DATABASE_URI = getenv('TEST_DATABASE_URI', default='postgresql://andeladeveloper:andeladeveloper@localhost/activo_test')
     environ['JWT_SECRET_KEY'] = (
         '-----BEGIN RSA PRIVATE KEY-----\n'
         'MIICWwIBAAKBgQDdlatRjRjogo3WojgGHFHYLugdUWAY9iR3fy4arWNA1KoS8kVw33cJi'
