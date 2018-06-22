@@ -1,3 +1,6 @@
+"""Module for asset category resource."""
+import re
+
 from flask_restplus import Resource
 from flask import request, jsonify
 
@@ -6,6 +9,8 @@ from main import api
 from api.middlewares.token_required import token_required
 from api.utilities.model_serializers.asset_category import AssetCategorySchema
 from api.utilities.model_serializers.attribute import AttributeSchema
+from api.middlewares.base_validator import ValidationError
+from api.utilities.validators.validate_id import validate_id
 
 
 @api.route('/asset-categories')
@@ -53,8 +58,6 @@ class AssetCategoryResource(Resource):
         return response
 
 
-
-
 @api.route('/asset-categories/stats')
 class AssetCategoryStats(Resource):
     """
@@ -79,3 +82,32 @@ class AssetCategoryStats(Resource):
             'status': 'success',
             'data': data
         }
+
+
+@api.route('/asset-categories/<string:id>')
+class AssetCategoryListResource(Resource):
+    @token_required
+    def get(self, id):
+        """
+        Get a single asset category
+        """
+        if not validate_id(id):
+            raise ValidationError(dict(message='Invalid id'), 400)
+
+        single_category = AssetCategory.get(id)
+        if not single_category or single_category.deleted:
+            raise ValidationError(dict(
+                message='Asset category not found'), 404)
+
+        asset_category_schema = AssetCategorySchema()
+        attributes_schema = AttributeSchema(
+            many=True, exclude=['choices', 'id', 'deleted'])
+
+        return {
+           'status': 'success',
+           'data': {
+            'name': single_category.name,
+            'customAttributes': attributes_schema.dump(
+                single_category.attributes).data
+           }
+        }, 200
