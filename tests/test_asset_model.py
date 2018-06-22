@@ -27,5 +27,6 @@ class TestAssetModel:
         asset.save()
         assert Asset.get(asset.id) == asset
 
-    def test_delete(self, new_asset_category):
+    def test_delete(self, new_asset_category, request_ctx,
+                    mock_request_obj_decoded_token):
         new_asset_category.assets[0].delete()
