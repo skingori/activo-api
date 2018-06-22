@@ -26,3 +26,14 @@ class AssetCategorySchema(BaseSchema):
 
     def get_asset_counts(self, obj):
         return obj.assets_count
+
+class UpdateAssetCategorySchema(BaseSchema):
+    """Asset category model schema"""
+
+    name = fields.String(validate=(string_length_60_validator, name_validator))
+
+    @post_load
+    def update_asset_category(self, data):
+        """Return asset category object after successful loading of data"""
+        return data
+    

@@ -6,6 +6,7 @@ from os import getenv
 from flask import json, request
 
 from api.models.asset_category import AssetCategory
+from api.models.attribute import Attribute
 from api.utilities.constants import CHARSET
 from .mocks.asset_category import (
     valid_asset_category_data,
@@ -115,6 +116,86 @@ class TestAssetCategoriesEndpoints:
         assert response_json['status'] == 'error'
         assert response_json['errors']['0']['label'][0] == serialization_errors['field_required']  # noqa
 
+
+    def test_update_asset_category(self, client, init_db, auth_header):
+        """
+            Test to Update an asset category without attribute
+        """
+        asset_category = AssetCategory(name='TestLaptop')
+        asset_category.save()
+        data = json.dumps(valid_asset_category_data_without_attributes)
+
+        response = client.patch(
+            f'{api_v1_base_url}/asset-categories/{asset_category.id}',
+            headers=auth_header, data=data
+        )
+
+        response_json = json.loads(response.data.decode(CHARSET))
+
+        assert response.status_code == 200
+        assert response_json['status'] == 'success'
+        assert response_json['data']['customAttributes'] == []
+
+    def test_update_asset_category_with_fake_id(self, client, init_db, auth_header):
+        """
+            Test to Update an asset category with fake id
+        """
+
+        data = json.dumps(valid_asset_category_data_without_attributes)
+
+        response = client.patch(
+            f'{api_v1_base_url}/asset-categories/-llllllll',
+            headers=auth_header, data=data
+        )
+
+        response_json = json.loads(response.data.decode(CHARSET))
+
+        assert response.status_code == 404
+        assert response_json['status'] == 'error'
+        assert response_json['message'] == 'AssetCategory not found'
+
+    def test_update_asset_category_with_invalid_id(self, client, init_db, auth_header):
+        """
+            Test to Update an asset category with invalid id
+        """
+
+        data = json.dumps(valid_asset_category_data_without_attributes)
+
+        response = client.patch(
+            f'{api_v1_base_url}/asset-categories/-llll@@@llll',
+            headers=auth_header, data=data
+        )
+
+        response_json = json.loads(response.data.decode(CHARSET))
+
+        assert response.status_code == 400
+        assert response_json['status'] == 'error'
+        assert response_json['message'] == 'Invalid id in parameter'
+
+    def test_update_asset_category_with_attribute(self, client, init_db, auth_header):
+        """
+        Test to Update an asset category with an attribute
+        """
+        asset_category = AssetCategory(name='TestLaptop')
+        attribute_data = valid_asset_category_data['attributes'][0]
+        attribute = Attribute(**attribute_data)
+        asset_category.attributes.append(attribute)
+        asset_category.save()
+        
+        attribute_data['id'] = attribute.id
+        data = json.dumps({'attributes': [attribute_data]})
+
+        response = client.patch(
+            f'{api_v1_base_url}/asset-categories/{asset_category.id}',
+            headers=auth_header, data=data
+        )
+
+        response_json = json.loads(response.data.decode(CHARSET))
+
+
+        assert response.status_code == 200
+        assert response_json['status'] == 'success'
+        assert len(response_json['data']['customAttributes']) > 0
 
     def test_get_one_asset_category(self, client, init_db, auth_header):
         """

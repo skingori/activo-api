@@ -38,3 +38,23 @@ class AttributeSchema(BaseSchema):
         """Return attribute object after successful loading into schema"""
 
         return Attribute(**data)
+
+
+class UpdateAttributeSchema(BaseSchema):
+    """Attribute model schema"""
+
+    id = fields.String()
+    label = fields.String(validate=(string_length_60_validator, name_validator))
+    is_required = fields.Boolean()
+
+    input_control = fields.String(validate=(string_length_60_validator, name_validator))
+    choices = fields.String(validate=validate.Length(
+                                max=250,
+                                error=serialization_errors[
+                                    'string_length'].format('250')))
+
+    @post_load
+    def update_attribute(self, data):
+        """Return attribute object after successful loading into schema"""
+
+        return data

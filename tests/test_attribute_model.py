@@ -22,7 +22,7 @@ class TestAttributeModel:
         assert isinstance(attribute_query.all(), list)
 
     def test_update(self, new_asset_category):
-        new_asset_category.attributes[0].update(label='width')
+        new_asset_category.attributes[0].updates(label='width')
         assert new_asset_category.attributes[0].label == 'width'
 
     def test_get(self, new_asset_category):

@@ -19,7 +19,7 @@ class ModelOperations(object):
         db.session.commit()
         return self
 
-    def update(self, **kwargs):
+    def updates(self, **kwargs):
         """
         update entries
         """
@@ -33,6 +33,19 @@ class ModelOperations(object):
         return entries by id
         """
         return cls.query.get(id)
+
+    @classmethod
+    def get_or_404(cls, id):
+        """
+        return entries by id
+        """
+
+        record = cls.query.get(id)
+        
+        if not record or record.deleted:
+            raise ValidationError({'message': f'{cls.__name__} not found'}, 404)
+
+        return record
 
     def get_child_relationships(self):
         """

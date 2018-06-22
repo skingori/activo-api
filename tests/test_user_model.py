@@ -10,7 +10,7 @@ class TestUserModel:
     assert User.get('1') == new_user
 
   def test_update(self, new_user):
-    new_user.update(name='Ayobami')
+    new_user.updates(name='Ayobami')
     assert new_user.name == 'Ayobami' 
 
   def test_count(self, new_user):

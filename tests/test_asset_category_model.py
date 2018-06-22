@@ -9,7 +9,7 @@ class TestAssetCategoryModel:
         assert new_asset_category == new_asset_category.save()
 
     def test_update(self, new_asset_category):
-        new_asset_category.update(name='USB Dongles')
+        new_asset_category.updates(name='USB Dongles')
         assert new_asset_category.name == 'USB Dongles'
 
     def test_get(self, new_asset_category):

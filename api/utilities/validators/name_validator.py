@@ -20,3 +20,4 @@ def name_validator(data):
     else:
         if not re.match(string_regex, data):
             raise ValidationError(serialization_errors['string_characters'])
+    return True

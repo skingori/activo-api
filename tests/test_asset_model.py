@@ -17,7 +17,7 @@ class TestAssetModel:
         assert isinstance(asset_query.all(), list)
 
     def test_update(self, new_asset_category):
-        new_asset_category.assets[0].update(serial='FFE323DF')
+        new_asset_category.assets[0].updates(serial='FFE323DF')
         assert new_asset_category.assets[0].serial == 'FFE323DF'
 
     def test_get(self, new_asset_category):
