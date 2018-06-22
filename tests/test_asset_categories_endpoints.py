@@ -115,10 +115,6 @@ class TestAssetCategoriesEndpoints:
         assert response_json['status'] == 'error'
         assert response_json['errors']['0']['label'][0] == serialization_errors['field_required']  # noqa
 
-        #   def test_delete_asset_category(self, client, init_db, auth_header):
-        # """
-        #  Tests that a single asset category can be deleted
-
 
     def test_get_one_asset_category(self, client, init_db, auth_header):
         """
