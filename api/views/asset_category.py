@@ -83,17 +83,6 @@ class AssetCategoryStats(Resource):
             'data': data
         }
 
-    #         @token_required
-    # def delete(self, id):
-    #     """
-    #     Soft delete asset categories
-
-    #  single_category.delete()
-
-    #     return {
-    #         'status': 'success',
-    #         'message': 'category deleted successfully'
-
 
 @api.route('/asset-categories/<string:id>')
 class AssetCategoryListResource(Resource):
