@@ -163,7 +163,7 @@ class TestAssetCategoriesEndpoints:
         response_json = json.loads(response.data.decode(CHARSET))
         assert response.status_code == 400
         assert response_json['status'] == 'error'
-        assert response_json['message'] == 'Invalid id'
+        assert response_json['message'] == 'Invalid id in parameter'
 
     def test_delete_asset_category(self, client, init_db, auth_header):
         """
@@ -208,4 +208,4 @@ class TestAssetCategoriesEndpoints:
         response_json = json.loads(response.data.decode(CHARSET))
         assert response.status_code == 400
         assert response_json['status'] == 'error'
-        assert response_json['message'] == 'Invalid id'
+        assert response_json['message'] == 'Invalid id in parameter'
