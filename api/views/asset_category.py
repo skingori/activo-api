@@ -131,3 +131,29 @@ class AssetCategoryListResource(Resource):
             'status': 'success',
             'message': 'category deleted successfully'
         }
+
+@api.route('/asset-categories')
+class AssetCategoryList(Resource):
+    """
+    Resource class for getting the list of asset categories and
+    their corresponding asset counts
+    """
+
+    @token_required
+    def get(self):
+        """
+        Gets list of asset categories and the corresponding asset count
+        """
+
+        if request.args:
+            asset_categories = AssetCategory._query(request.args)
+        else:
+            asset_categories = AssetCategory._query().filter_by(deleted=False)\
+                .with_entities(AssetCategory.id, AssetCategory.name, AssetCategory.assets_count)
+
+        asset_category_schema = AssetCategorySchema(many=True)
+
+        return {
+            'status': 'success',
+            'data': asset_category_schema.dump(asset_categories).data
+        }

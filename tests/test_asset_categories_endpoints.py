@@ -209,3 +209,39 @@ class TestAssetCategoriesEndpoints:
         assert response.status_code == 400
         assert response_json['status'] == 'error'
         assert response_json['message'] == 'Invalid id in parameter'
+
+    def test_asset_categories_list_endpoint(self, client, auth_header):
+        response = client.get(f'{api_v1_base_url}/asset-categories',
+                              headers=auth_header)
+        response_json = json.loads(response.data.decode(CHARSET))
+
+        assert response.status_code == 200
+        assert response_json['status'] == 'success'
+        assert isinstance(response_json['data'], list)
+        assert len(response_json['data']) is not 0
+        assert response_json['data'][0]['name'] == 'Headset'
+
+    def test_asset_categories_list_endpoint_args(self, client, auth_header):
+        asset_category = AssetCategory(name='Laptop')
+        asset_category2 = AssetCategory(name='Chairs')
+        asset_category.save()
+        asset_category2.save()
+        response = client.get(f'{api_v1_base_url}/asset-categories?where=name,like,chairs',
+                              headers=auth_header)
+        response_json = json.loads(response.data.decode(CHARSET))
+
+        assert response.status_code == 200
+        assert response_json['status'] == 'success'
+        assert isinstance(response_json['data'], list)
+        assert len(response_json['data']) is 1
+        assert response_json['data'][0]['name'] == 'Chairs'
+
+        invalid_response = client.get(f'{api_v1_base_url}/asset-categories?where=name,like.chairs',
+                                      headers=auth_header)
+        invalid_response_json = json.loads(invalid_response.data.decode(CHARSET))
+
+        assert invalid_response.status_code == 400
+        assert invalid_response_json['status'] == 'error'
+        asset_category.delete()
+        asset_category2.delete()
+
