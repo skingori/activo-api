@@ -55,14 +55,19 @@ An asset-management tool for Andela
 - Create Application environment variables and save them in .env file
     ```
     FLASK_ENV = "development" # Takes either development, production, testing
-    DATABASE_URI = "" # Development and production db uri
-    TEST_DATABASE_URI = "" # Testing db uri
+    DATABASE_URI = "postgresql://YOUR_DB_USER:YOUR_DB_PASSWORD@YOUR_HOST/YOUR_DATABASE_NAME" # Development and production postgres db uri
+    TEST_DATABASE_URI = "postgresql://YOUR_DB_USER:YOUR_DB_PASSWORD@YOUR_HOST/YOUR_TEST_DATABASE_NAME" # Testing postgres db uri
+    JWT_PUBLIC_KEY = "" # Andela Authentication public key, obtained from the technology dept
     ```
-- Running migrations
-    - initialize the database:
-        ```
-        flask init db
-        ```    
+- Apply migrations
+    ```
+    flask db upgrade
+    ```
+- Run the application.
+    ```
+    python manage.py runserver
+    ```
+- Should you make changes to the database models, run migrations as follows   
     - Migrate database:
         ```
         flask db migrate
@@ -71,10 +76,6 @@ An asset-management tool for Andela
         ```
         flask db upgrade
         ```
-- Run application.
-    ```
-    python manage.py runserver
-    ```
 
 
 
