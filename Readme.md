@@ -4,7 +4,7 @@
 An asset-management tool for Andela
 
 # Description 
- The **activo-api** is the backbone of an application for managing physical assets of the organisation. The project enables  centralised management of assets of the organisation. The the api provides features for registering the allocation and usage of assets, repairs and conditions of devices, allocation of computer devices and seat allocations.
+ The **activo-api** is the backbone of an application for managing physical assets of the organisation. The project enables  centralised management of assets of the organisation. The api provides features for registering the allocation and usage of assets, repairs and conditions of devices, allocation of computer devices and seat allocations.
 
  The API documentation can be found here: [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/8e9a3d77c5a5ab9b7f68)
 
